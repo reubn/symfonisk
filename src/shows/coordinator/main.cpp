@@ -3,12 +3,10 @@
 #include "../../main.hpp"
 #include "../../ringLEDs/main.hpp"
 
-#include "./shows/rainbowBreathe.hpp"
-#include "./shows/ringFade.hpp"
 #include "./shows/solidColour.hpp"
 #include "./shows/rainbow.hpp"
 
-std::map<int, void (*)(ConfigurableSettings& settings)> shows{{0, loopRainbowBreathe}, {1, loopRingFade}, {2, loopSolidColour}, {3, loopRainbow}};
+std::map<int, void (*)(ConfigurableSettings& settings)> shows{{0, loopSolidColour}, {1, loopRainbow}};
 int lastShow;
 
 void initialiseCoordinator(ConfigurableSettings& settings){};
