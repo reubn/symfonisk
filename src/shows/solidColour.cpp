@@ -7,18 +7,11 @@
 
 void loopSolidColour(ConfigurableSettings& settings) {
   static float msBetweenFrames = 1000 / 60; // 60FPS
-
   static unsigned long lastExecution = millis();
 
-  if(millis() >= lastExecution + msBetweenFrames){
-    if(settings.enabled){
-      // LEDS.setBrightness(255);
-      // for(auto& ringLED : allLEDs) rawLEDs[ringLED.index] = CRGB(255, 255, 255);
+  if(millis() < lastExecution + msBetweenFrames) return;
 
-      LEDS.setBrightness(settings.value);
-      for(auto& ringLED : allLEDs) rawLEDs[ringLED.index] = CHSV(settings.hue, settings.saturation, 255);
-    }
-    else for(auto& ringLED : allLEDs) rawLEDs[ringLED.index] = CRGB(0, 0, 0);
-  	FastLED.show();
-  }
+  if(settings.enabled) for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, HsbColor(settings.hue / 255.0f, settings.saturation / 255.0f, settings.brightness / 255.0f));
+  else for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, RgbColor(0, 0, 0));
+	LEDStrip.Show();
 }

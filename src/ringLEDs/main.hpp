@@ -1,7 +1,6 @@
 #include <vector>
 
-#define FASTLED_ALLOW_INTERRUPTS 0
-#include <FastLED.h>
+#include <NeoPixelBus.h>
 
 enum Ring {inner, outer};
 
@@ -11,8 +10,8 @@ struct RingLED {
     Ring ring;
 };
 
-extern CRGB rawLEDs[];
+extern NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> LEDStrip;
 extern std::vector<RingLED> innerLEDs;
 extern std::vector<RingLED> outerLEDs;
 extern std::vector<RingLED> allLEDs;
-extern void initialiseLEDs(int brightness);
+extern void initialiseLEDs();

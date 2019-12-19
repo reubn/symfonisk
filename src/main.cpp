@@ -9,12 +9,16 @@
 ConfigurableSettings settings;
 
 void setup() {
-	Serial.begin(9600);
-  Serial.println("Started");
+	Serial.begin(115200);
+  while (!Serial); // wait for serial attach
+
+  Serial.println();
+  Serial.println("Initializing...");
+  Serial.flush();
 
 	// WiFi.forceSleepBegin();
 
-  initialiseLEDs(settings.globalBrightness);
+  initialiseLEDs();
 }
 
 void loop() {
