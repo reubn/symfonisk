@@ -1,10 +1,10 @@
 struct ConfigurableSettings {
   bool enabled = true;
 
-  int showId = 3;
+  int showId = 1;
   int showMode = 0;
 
-  int hue = 16;
-  int saturation = 255;
+  int hue = 0;
+  int saturation = 0;
   int brightness = 255;
 };
