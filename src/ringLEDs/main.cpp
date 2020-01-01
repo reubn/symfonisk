@@ -5,36 +5,27 @@
 
 NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> LEDStrip(NUMBER_OF_LEDS, DATA_PIN); // Data Pin is ignored as RX is always used
 
-// 12 + 8 Concentric Rings
-// std::vector<RingLED> outerLEDs {
-// 	{0, 0.917, outer}, {1, 0, outer}, {2, 0.083, outer}, {3, 0.167, outer}, {4, 0.25, outer}, {5, 0.333, outer}, {6, 0.417, outer}, {7, 0.5, outer}, {8, 0.583, outer}, {9, 0.667, outer}, {10, 0.75, outer}, {11, 0.833, outer}
-// };
-//
-// std::vector<RingLED> innerLEDs {
-// 	{12, 0.125, inner}, {13, 0.25, inner}, {14, 0.375, inner}, {15, 0.5, inner}, {16, 0.625, inner}, {17, 0.75, inner}, {18, 0.875, inner}, {19, 0, inner}
-// };
+int ringCount = 8;
 
-// std::vector<RingLED> outerLEDs {
-// 	{0, 0, outer}, {1, 0.125, outer}, {2, 0.25, outer}, {3, 0.375, outer}, {4, 0.5, outer}, {5, 0.625, outer}, {6, 0.75, outer}, {7, 1, outer},
-// 	// {8, 0, outer}, {9, 0.125, outer}, {10, 0.25, outer}, {11, 0.375, outer}, {12, 0.5, outer}, {13, 0.625, outer}, {14, 0.75, outer}, {15, 1, outer}
-// };
-
-std::vector<RingLED> outerLEDs {
-	{0, 0, outer}, {1, 0, outer}, {2, 0, outer}, {3, 0, outer}, {4, 0, outer}, {5, 0, outer}, {6, 0, outer}, {7, 0, outer}, {8, 0, outer}, {9, 0, outer}, {10, 0, outer}, {11, 0, outer}, {12, 0, outer}, {13, 0, outer}, {14, 0, outer}, {15, 0, outer}, {16, 0, outer}, {17, 0, outer}, {18, 0, outer}, {19, 0, outer},
-{20, 0.125, outer}, {21, 0.125, outer}, {22, 0.125, outer}, {23, 0.125, outer}, {24, 0.125, outer}, {25, 0.125, outer}, {26, 0.125, outer}, {27, 0.125, outer}, {28, 0.125, outer}, {29, 0.125, outer}, {30, 0.125, outer}, {31, 0.125, outer}, {32, 0.125, outer}, {33, 0.125, outer}, {34, 0.125, outer}, {35, 0.125, outer}, {36, 0.125, outer}, {37, 0.125, outer}, {38, 0.125, outer}, {39, 0.125, outer},
-{40, 0.25, outer}, {41, 0.25, outer}, {42, 0.25, outer}, {43, 0.25, outer}, {44, 0.25, outer}, {45, 0.25, outer}, {46, 0.25, outer}, {47, 0.25, outer}, {48, 0.25, outer}, {49, 0.25, outer}, {50, 0.25, outer}, {51, 0.25, outer}, {52, 0.25, outer}, {53, 0.25, outer}, {54, 0.25, outer}, {55, 0.25, outer}, {56, 0.25, outer}, {57, 0.25, outer}, {58, 0.25, outer}, {59, 0.25, outer},
-{60, 0.375, outer}, {61, 0.375, outer}, {62, 0.375, outer}, {63, 0.375, outer}, {64, 0.375, outer}, {65, 0.375, outer}, {66, 0.375, outer}, {67, 0.375, outer}, {68, 0.375, outer}, {69, 0.375, outer}, {70, 0.375, outer}, {71, 0.375, outer}, {72, 0.375, outer}, {73, 0.375, outer}, {74, 0.375, outer}, {75, 0.375, outer}, {76, 0.375, outer}, {77, 0.375, outer}, {78, 0.375, outer}, {79, 0.375, outer}
+//	Generated w/
+// (({x, y}) => `std::vector<RingLED> allLEDs {
+//     {${Array.from({length: x} , (_ , i) => Array.from({length: y} , (_ , j) => [(i * y) + j, (i / x).toFixed(1), !!(i % 2) ? j : y - j - 1].join(', ')).join('}, {')).join('},\n    {')}}
+// };`)({x: 5, y: 16})
+std::vector<RingLED> allLEDs {
+     {0, 0.0, 7}, {1, 0.0, 6}, {2, 0.0, 5}, {3, 0.0, 4}, {4, 0.0, 3}, {5, 0.0, 2}, {6, 0.0, 1}, {7, 0.0, 0},
+    {8, 0.1, 0}, {9, 0.1, 1}, {10, 0.1, 2}, {11, 0.1, 3}, {12, 0.1, 4}, {13, 0.1, 5}, {14, 0.1, 6}, {15, 0.1, 7},
+    {16, 0.2, 7}, {17, 0.2, 6}, {18, 0.2, 5}, {19, 0.2, 4}, {20, 0.2, 3}, {21, 0.2, 2}, {22, 0.2, 1}, {23, 0.2, 0},
+    {24, 0.3, 0}, {25, 0.3, 1}, {26, 0.3, 2}, {27, 0.3, 3}, {28, 0.3, 4}, {29, 0.3, 5}, {30, 0.3, 6}, {31, 0.3, 7},
+    {32, 0.4, 7}, {33, 0.4, 6}, {34, 0.4, 5}, {35, 0.4, 4}, {36, 0.4, 3}, {37, 0.4, 2}, {38, 0.4, 1}, {39, 0.4, 0},
+    {40, 0.5, 0}, {41, 0.5, 1}, {42, 0.5, 2}, {43, 0.5, 3}, {44, 0.5, 4}, {45, 0.5, 5}, {46, 0.5, 6}, {47, 0.5, 7},
+    {48, 0.6, 7}, {49, 0.6, 6}, {50, 0.6, 5}, {51, 0.6, 4}, {52, 0.6, 3}, {53, 0.6, 2}, {54, 0.6, 1}, {55, 0.6, 0},
+    {56, 0.7, 0}, {57, 0.7, 1}, {58, 0.7, 2}, {59, 0.7, 3}, {60, 0.7, 4}, {61, 0.7, 5}, {62, 0.7, 6}, {63, 0.7, 7},
+    {64, 0.8, 7}, {65, 0.8, 6}, {66, 0.8, 5}, {67, 0.8, 4}, {68, 0.8, 3}, {69, 0.8, 2}, {70, 0.8, 1}, {71, 0.8, 0},
+    {72, 0.9, 0}, {73, 0.9, 1}, {74, 0.9, 2}, {75, 0.9, 3}, {76, 0.9, 4}, {77, 0.9, 5}, {78, 0.9, 6}, {79, 0.9, 7}
 };
 
-std::vector<RingLED> innerLEDs {};
-
-std::vector<RingLED> allLEDs;
 
 void initialiseLEDs(){
-  allLEDs.reserve(innerLEDs.size() + outerLEDs.size()); // preallocate memory
-  allLEDs.insert(allLEDs.end(), innerLEDs.begin(), innerLEDs.end());
-  allLEDs.insert(allLEDs.end(), outerLEDs.begin(), outerLEDs.end());
-
   if(allLEDs.size() != NUMBER_OF_LEDS) Serial.println("LED COUNT MISMATCH!");
 
 	LEDStrip.Begin();

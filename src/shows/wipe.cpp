@@ -24,18 +24,10 @@ void loopWipe(ConfigurableSettings& settings){
 
     static float saturation = 1;
 
-    for(auto& ringLED : outerLEDs) {
+    for(auto& ringLED : allLEDs) {
   		float hue = fmod(ringLED.angle + colourOffset, maxOffset) * maxHue;
       float brightness = 1 - std::sin(M_PI * fabs(angleOffset - ringLED.angle));
-      if(brightness < 0.06 && brightness != 0) brightness = 0.06;
-      // Serial.println(brightness);
-      LEDStrip.SetPixelColor(ringLED.index, colorGamma.Correct(RgbColor(HsbColor(hue, saturation, brightness))));
-  	}
-
-    for(auto& ringLED : innerLEDs) {
-  		float hue = fmod(ringLED.angle - colourOffset, maxOffset) * maxHue;
-      float brightness = std::sin(M_PI * fabs(angleOffset - ringLED.angle));
-      if(brightness < 0.06 && brightness != 0) brightness = 0.06;
+      // if(brightness < 0.06 && brightness != 0) brightness = 0.06;
       // Serial.println(brightness);
       LEDStrip.SetPixelColor(ringLED.index, colorGamma.Correct(RgbColor(HsbColor(hue, saturation, brightness))));
   	}

@@ -2,16 +2,15 @@
 
 #include <NeoPixelBus.h>
 
-enum Ring {inner, outer};
-
 struct RingLED {
     int index;
     float angle;
-    Ring ring;
+    int ring;
 };
 
 extern NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> LEDStrip;
-extern std::vector<RingLED> innerLEDs;
-extern std::vector<RingLED> outerLEDs;
+// extern std::vector<RingLED> innerLEDs;
+// extern std::vector<RingLED> outerLEDs;
+extern int ringCount;
 extern std::vector<RingLED> allLEDs;
 extern void initialiseLEDs();
