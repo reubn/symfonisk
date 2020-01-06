@@ -11,7 +11,7 @@ void loopSolidColour(ConfigurableSettings& settings) {
 
   if(millis() < lastExecution + msBetweenFrames) return;
 
-  if(settings.enabled) for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, HsbColor(settings.hue / 255.0f, settings.saturation / 255.0f, settings.brightness / 255.0f));
+  if(settings.enabled) for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, settings.colour);
   else for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, RgbColor(0, 0, 0));
 	LEDStrip.Show();
 }

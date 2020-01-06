@@ -21,8 +21,13 @@ void loopRainbowBounce(ConfigurableSettings& settings){
 
     if(millis() < lastExecutionTimestamp + msBetweenFrames) return;
 
-    static float maxHue = 0.65;
-    static float minHue = 0.4;
+    static float hueLocator = 0.5;
+    static int directionHueLocator = +1;
+    static float hueLocatorOffsetUp = 0.15;
+    static float hueLocatorOffsetDown = 0.1;
+
+    static float maxHue = hueLocator + hueLocatorOffsetUp;
+    static float minHue = hueLocator - hueLocatorOffsetDown;
     static float diffHue = maxHue - minHue;
 
     static float seamRelocationFactor = 0.75;
@@ -43,6 +48,11 @@ void loopRainbowBounce(ConfigurableSettings& settings){
   	}
 
     bounceBetween(direction, colourOffset, colourOffsetIncrement);
+
+    // Gradually changes hues faded between
+    bounceBetween(directionHueLocator, hueLocator, 0.0001);
+    maxHue = (hueLocatorOffsetDown + (hueLocator * ((1 - hueLocatorOffsetUp) - hueLocatorOffsetDown))) + hueLocatorOffsetUp;
+    minHue = (hueLocatorOffsetDown + (hueLocator * ((1 - hueLocatorOffsetUp) - hueLocatorOffsetDown))) - hueLocatorOffsetDown;
 
   	LEDStrip.Show();
     lastExecutionTimestamp = millis();
