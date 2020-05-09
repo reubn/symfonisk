@@ -3,7 +3,7 @@ console.log('Start');
 
 
 let client = new huejay.Client({
-  host:     '172.16.5.153',
+  host:     '172.19.0.105',
   timeout:  15000,            // Optional, timeout in milliseconds (15000 is the default)
 });
 
@@ -18,20 +18,20 @@ client.bridge.get()
   client.lights.getAll()
     .then(lights => {
       for (let light of lights) {
-        console.log(`Light [${light.id}]: ${light.name}`);
-        console.log(`  Type:             ${light.type}`);
-        console.log(`  Unique ID:        ${light.uniqueId}`);
-        console.log(`  Manufacturer:     ${light.manufacturer}`);
-        console.log(`  Model Id:         ${light.modelId}`);
-        console.log('  Model:');
-        console.log(`    Id:             ${light.model.id}`);
-        console.log(`    Manufacturer:   ${light.model.manufacturer}`);
-        console.log(`    Name:           ${light.model.name}`);
-        console.log(`    Type:           ${light.model.type}`);
-        console.log(`    Color Gamut:    ${light.model.colorGamut}`);
-        console.log(`    Friends of Hue: ${light.model.friendsOfHue}`);
-        console.log(`  Software Version: ${light.softwareVersion}`);
-        console.log('  State:');
+        // console.log(`Light [${light.id}]: ${light.name}`);
+        // console.log(`  Type:             ${light.type}`);
+        // console.log(`  Unique ID:        ${light.uniqueId}`);
+        // console.log(`  Manufacturer:     ${light.manufacturer}`);
+        // console.log(`  Model Id:         ${light.modelId}`);
+        // console.log('  Model:');
+        // console.log(`    Id:             ${light.model.id}`);
+        // console.log(`    Manufacturer:   ${light.model.manufacturer}`);
+        // console.log(`    Name:           ${light.model.name}`);
+        // console.log(`    Type:           ${light.model.type}`);
+        // console.log(`    Color Gamut:    ${light.model.colorGamut}`);
+        // console.log(`    Friends of Hue: ${light.model.friendsOfHue}`);
+        // console.log(`  Software Version: ${light.softwareVersion}`);
+        // console.log('  State:');
         console.log(`    On:         ${light.on}`);
         console.log(`    Reachable:  ${light.reachable}`);
         console.log(`    Brightness: ${light.brightness}`);
@@ -43,6 +43,7 @@ client.bridge.get()
         console.log(`    Alert:      ${light.alert}`);
         console.log(`    Effect:     ${light.effect}`);
         console.log();
+
         light.on = true
         light.effect = /*light.effect === 'colorloop' ? '' : */'colorloop'
 

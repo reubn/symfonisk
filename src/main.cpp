@@ -25,37 +25,61 @@ HsbColor getHsb(int hue, int sat, int bri) {
   return HsbColor(H, S, B);
 }
 
+void interpretQuery(HueLightInfo& _info, HueLightInfo& newInfo) {
+  _info = newInfo;
+
+  Serial.println("");
+  Serial.println("----- Query -----");
+  Serial.print("on: "); Serial.println(_info.on);
+  Serial.print("effect: "); Serial.println(_info.effect);
+
+  Serial.println("");
+  Serial.print("raw hue: "); Serial.println(_info.hue);
+  Serial.print("raw saturation: "); Serial.println(_info.saturation);
+  Serial.print("raw brightness: "); Serial.println(_info.brightness);
+
+
+  if(_info.on) {
+    if (_info.effect == EFFECT_COLORLOOP || (_info.hue == 4938 && _info.saturation == 114 && _info.brightness == 0)) {
+      settings.showId = 4;
+    } else {
+      if(_info.brightness == 0) {
+        _info.brightness = 254;
+      }
+
+      HsbColor newColour = getHsb(_info.hue, _info.saturation, _info.brightness);
+
+      settings.colour = newColour;
+
+      settings.showId = 0;
+    }
+  } else {
+    _info.brightness = 0;
+    settings.colour = HsbColor(settings.colour.H, settings.colour.S, 0.0f);
+
+    settings.showId = 0;
+  }
+
+  Serial.println("");
+  Serial.print("show id: "); Serial.println(settings.showId);
+  Serial.println("");
+
+  Serial.print("display hue: "); Serial.println(settings.colour.H);
+  Serial.print("display saturation: "); Serial.println(settings.colour.S);
+  Serial.print("display brightness: "); Serial.println(settings.colour.B);
+
+  Serial.println("-----------------");
+}
+
 class PixelHandler : public LightHandler {
-  private:
-    HueLightInfo _info;
   public:
+    HueLightInfo _info;
     void handleQuery(int lightNumber, HueLightInfo newInfo, aJsonObject* raw) {
-      // define the effect to apply, in this case linear blend
-      HsbColor newColour = getHsb(newInfo.hue, newInfo.saturation, newInfo.brightness);
-      // RgbColor originalColor = strip.GetPixelColor(0);
-      Serial.print("Effect: "); Serial.println(newInfo.effect);
+      interpretQuery(_info, newInfo);
+    }
 
-      _info = newInfo;
-
-      if (newInfo.on) {
-        if (newInfo.effect == EFFECT_COLORLOOP) {
-          settings.showId = 4;
-        } else {
-					Serial.print("Hue: "); Serial.println(newColour.H);
-					Serial.print("Saturation: "); Serial.println(newColour.S);
-					Serial.print("Brightness: "); Serial.println(newColour.B);
-
-
-					settings.colour = newColour;
-					settings.showId = 0;
-				}
-      }
-      else {
-				Serial.println("TURN OFF");
-				settings.colour = HsbColor(settings.colour.H, settings.colour.S, 0.0f);
-
-				settings.showId = 0;
-      }
+    string getFriendlyName(int lightNumber) {
+      return "Symfonisk Light" DEVICE_NAME;
     }
 
     HueLightInfo getInfo(int lightNumber) { return _info; }
@@ -65,9 +89,7 @@ void setup() {
 	Serial.begin(115200);
   // while (!Serial); // wait for serial attach
 
-  Serial.println();
   Serial.println("Initializing...");
-  Serial.flush();
 
   initialiseLEDs();
 	// SPIFFS.begin();
@@ -83,11 +105,21 @@ void setup() {
 
 	NTP.begin("pool.ntp.org", 0, true);
 
+  PixelHandler* pixelHandler = new PixelHandler();
+
+  pixelHandler->_info.on = true;
+  pixelHandler->_info.hue = 0;
+  pixelHandler->_info.saturation = 0;
+  pixelHandler->_info.brightness = 0;
+  pixelHandler->_info.effect = EFFECT_COLORLOOP;
+
 	LightService.begin();
 
-	LightService.setLightHandler(0, new PixelHandler());
+  interpretQuery(pixelHandler->_info, pixelHandler->_info);
 
-	if (timeStatus() == timeSet) {
+	LightService.setLightHandler(0, pixelHandler);
+
+	if(timeStatus() == timeSet) {
     Serial.println(NTP.getTimeDateString(now()));
   }
 }

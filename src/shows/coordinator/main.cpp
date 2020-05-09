@@ -17,7 +17,9 @@ void initialiseCoordinator(ConfigurableSettings& settings){};
 void loopCoordinator(ConfigurableSettings& settings){
   if(settings.showId != lastShow) {
     for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, RgbColor(0, 0, 0));
-    Serial.println("Changing Show");
+    Serial.println("");
+    Serial.println("----- Switch to Show " + String(settings.showId) +  " -----");
+    Serial.println("");
   };
 
   lastShow = settings.showId;
