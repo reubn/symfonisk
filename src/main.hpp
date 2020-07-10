@@ -1,7 +1,7 @@
 #include <NeoPixelBus.h>
 
 struct ConfigurableSettings {
-  bool enabled = true;
+  bool on = true;
 
   int showId = 0;
   int showMode = 0;

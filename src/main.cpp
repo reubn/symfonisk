@@ -40,6 +40,7 @@ void interpretQuery(HueLightInfo& _info, HueLightInfo& newInfo) {
 
 
   if(_info.on) {
+    // Hack to stop Alexa removing effect
     if (_info.effect == EFFECT_COLORLOOP || (_info.hue == 4938 && _info.saturation == 114 && _info.brightness == 0)) {
       settings.showId = 4;
     } else {
