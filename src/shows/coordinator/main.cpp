@@ -4,13 +4,11 @@
 #include "../../ringLEDs/main.hpp"
 
 #include "./shows/solidColour.hpp"
-#include "./shows/rainbow.hpp"
 #include "./shows/rainbowBounce.hpp"
-#include "./shows/chase.hpp"
-#include "./shows/wipe.hpp"
 
-std::map<int, void (*)(ConfigurableSettings& settings)> shows{{0, loopSolidColour}, {1, loopRainbow}, {2, loopChase}, {3, loopWipe}, {4, loopRainbowBounce}};
+std::map<int, void (*)(ConfigurableSettings& settings, bool first)> shows{{0, loopSolidColour}, {1, loopRainbowBounce}};
 int lastShow;
+bool lastState;
 
 void initialiseCoordinator(ConfigurableSettings& settings){};
 
@@ -22,6 +20,12 @@ void loopCoordinator(ConfigurableSettings& settings){
     Serial.println("");
   };
 
+  if(settings.on) shows[settings.showId](settings, settings.showId != lastShow || !lastState);
+  else if(lastState) {
+    for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, RgbColor(0, 0, 0));
+    LEDStrip.Show();
+  }
+
   lastShow = settings.showId;
-  shows[settings.showId](settings);
+  lastState = settings.on;
 };

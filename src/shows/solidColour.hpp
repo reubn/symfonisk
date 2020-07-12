@@ -1,1 +1,1 @@
-extern void loopSolidColour(ConfigurableSettings& settings);
+extern void loopSolidColour(ConfigurableSettings& settings, bool first);

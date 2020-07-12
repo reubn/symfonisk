@@ -16,7 +16,7 @@ float bounceBetween(int &direction, float &value, float increment) {
   else value = fmod(value + (increment * direction), 1);
 }
 
-void loopRainbowBounce(ConfigurableSettings& settings){
+void loopRainbowBounce(ConfigurableSettings& settings, bool first){
     static float msBetweenFrames = 1000 / 60; // 60FPS
   	static unsigned long lastExecutionTimestamp = 0;
 
@@ -39,7 +39,7 @@ void loopRainbowBounce(ConfigurableSettings& settings){
     static NeoGamma<NeoGammaEquationMethod> colorGamma;
 
     static float saturation = 1;
-    static float brightness = settings.brightness / 255.0f;
+    float brightness = settings.colour.B;
 
     static int direction = +1;
 

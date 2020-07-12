@@ -5,17 +5,16 @@
 
 #include "solidColour.hpp"
 
-void loopSolidColour(ConfigurableSettings& settings) {
+void loopSolidColour(ConfigurableSettings& settings, bool first) {
   static float msBetweenFrames = 1000 / 60; // 60FPS
   static unsigned long lastExecution = millis();
 
   static RgbColor lastColour = RgbColor(0, 0, 0);
 
-  if(lastColour == settings.colour) return;
+  if(!first && lastColour == settings.colour) return;
   if(millis() < lastExecution + msBetweenFrames) return;
 
-  if(settings.on) for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, settings.colour);
-  else for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, RgbColor(0, 0, 0));
+  for(auto& ringLED : allLEDs) LEDStrip.SetPixelColor(ringLED.index, settings.colour);
 
   lastColour = settings.colour;
 	LEDStrip.Show();

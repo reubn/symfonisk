@@ -1,1 +1,1 @@
-extern void loopRainbowBounce(ConfigurableSettings& settings);
+extern void loopRainbowBounce(ConfigurableSettings& settings, bool first);
