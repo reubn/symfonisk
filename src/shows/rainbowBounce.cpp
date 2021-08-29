@@ -4,7 +4,7 @@
 
 #include "rainbowBounce.hpp"
 
-float bounceBetween(int &direction, float &value, float increment) {
+void bounceBetween(int &direction, float &value, float increment) {
   if(value + (increment * direction) > 1) {
     value = 1 - fmod(value + increment, 1);
     direction = -1;
