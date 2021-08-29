@@ -30,7 +30,8 @@ void setup() {
 
   initialiseLEDs();
   wifiManager.setAPCallback(configModeCallback);
-	wifiManager.autoConnect("Symfonisk Bulb", "cats-rats-egotistical-bats");
+  wifiManager.setConfigPortalTimeout(5 * 60);
+  wifiManager.autoConnect("Symfonisk Bulb", "cats-rats-egotistical-bats");
 
   if(WiFi.status() == WL_CONNECTED){
     Serial.println("Conected to WiFi");
@@ -39,6 +40,9 @@ void setup() {
     settings.on = true;
     settings.showId = 0;
     settings.colour = RgbColor(0, 255, 0);
+  } else {
+    Serial.println("WiFi has failed to connect. Restarting");
+    ESP.restart();
   }
 }
 
